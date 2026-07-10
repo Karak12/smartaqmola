@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import Providers from "@/components/Providers";
+import Providers from "@/shared/Providers";
 import "./globals.css";
 
 const manrope = Manrope({

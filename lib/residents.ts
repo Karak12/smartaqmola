@@ -1,119 +1,125 @@
 import type { IconName } from "./content";
+import type { LS } from "./i18n";
 
 export type ResidentTab = {
   id: string;
-  label: string;
-  title: string;
+  label: LS;
+  title: LS;
   page: string;
   color: string;
   tabBg: string;
   tabText: string;
-  subtitle: string;
-  items: { icon: IconName; text: string }[];
+  subtitle: LS;
+  items: { icon: IconName; text: LS }[];
 };
 
-export const residentsHero = {
-  badge: "Для жителей",
+export const residentsHero: { badge: LS } = {
+  badge: { ru: "Для жителей", kk: "Тұрғындарға" },
 };
 
 export const residentTabs: ResidentTab[] = [
   {
     id: "services",
-    label: "Сервисы",
-    title: "Сервисы",
+    label: { ru: "Сервисы", kk: "Сервистер" },
+    title: { ru: "Сервисы", kk: "Сервистер" },
     page: "01",
     color: "#2563EB",
     tabBg: "#2563EB",
     tabText: "#FFFFFF",
-    subtitle: "Все цифровые услуги для жителей Акмолинской области — в одном месте.",
+    subtitle: { ru: "Все цифровые услуги для жителей Акмолинской области — в одном месте.", kk: "Ақмола облысы тұрғындарына арналған барлық цифрлық қызметтер — бір жерде." },
     items: [
-      { icon: "plus-circle", text: "Подать обращение через iKomek 109" },
-      { icon: "refresh", text: "Проверить статус заявки онлайн" },
-      { icon: "map", text: "Карта проблем и благоустройства" },
-      { icon: "telegram", text: "Telegram-бот для быстрых обращений" },
+      { icon: "plus-circle", text: { ru: "Подать обращение через iKomek 109", kk: "iKomek 109 арқылы өтініш беру" } },
+      { icon: "refresh", text: { ru: "Проверить статус заявки онлайн", kk: "Өтінім мәртебесін онлайн тексеру" } },
+      { icon: "map", text: { ru: "Карта проблем и благоустройства", kk: "Мәселелер мен абаттандыру картасы" } },
+      { icon: "telegram", text: { ru: "Telegram-бот для быстрых обращений", kk: "Жедел өтініштерге арналған Telegram-бот" } },
     ],
   },
   {
     id: "appeal",
-    label: "Обращение",
-    title: "Обращение",
+    label: { ru: "Обращение", kk: "Өтініш" },
+    title: { ru: "Обращение", kk: "Өтініш" },
     page: "02",
     color: "#8B5CF6",
     tabBg: "#8B5CF6",
     tabText: "#FFFFFF",
-    subtitle: "Четыре простых шага — от описания проблемы до готового ответа.",
+    subtitle: { ru: "Четыре простых шага — от описания проблемы до готового ответа.", kk: "Төрт қарапайым қадам — мәселені сипаттаудан дайын жауапқа дейін." },
     items: [
-      { icon: "chat", text: "Опишите проблему и выберите категорию" },
-      { icon: "doc", text: "Приложите фото и детали" },
-      { icon: "refresh", text: "Отслеживайте статус в реальном времени" },
-      { icon: "check-circle", text: "Получите ответ на телефон и в бот" },
+      { icon: "chat", text: { ru: "Опишите проблему и выберите категорию", kk: "Мәселені сипаттап, санатты таңдаңыз" } },
+      { icon: "doc", text: { ru: "Приложите фото и детали", kk: "Фото мен мәліметтерді тіркеңіз" } },
+      { icon: "refresh", text: { ru: "Отслеживайте статус в реальном времени", kk: "Мәртебені нақты уақытта қадағалаңыз" } },
+      { icon: "check-circle", text: { ru: "Получите ответ на телефон и в бот", kk: "Жауапты телефонға және ботқа алыңыз" } },
     ],
   },
   {
     id: "support",
-    label: "Поддержка",
-    title: "Поддержка",
+    label: { ru: "Поддержка", kk: "Қолдау" },
+    title: { ru: "Поддержка", kk: "Қолдау" },
     page: "03",
     color: "#38A2C9",
     tabBg: "#38A2C9",
     tabText: "#FFFFFF",
-    subtitle: "Единый контакт-центр работает круглосуточно — мы всегда на связи.",
+    subtitle: { ru: "Единый контакт-центр работает круглосуточно — мы всегда на связи.", kk: "Бірыңғай байланыс орталығы тәулік бойы жұмыс істейді — біз әрдайым байланыстамыз." },
     items: [
-      { icon: "chat", text: "iKomek 109 — горячая линия" },
-      { icon: "clock", text: "Приём заявок 24/7 без выходных" },
-      { icon: "map", text: "г. Кокшетау, ул. Ч. Валиханова" },
-      { icon: "question", text: "База знаний и частые вопросы" },
+      { icon: "chat", text: { ru: "iKomek 109 — горячая линия", kk: "iKomek 109 — сенім телефоны" } },
+      { icon: "clock", text: { ru: "Приём заявок 24/7 без выходных", kk: "Өтінімдерді 24/7, демалыссыз қабылдау" } },
+      { icon: "map", text: { ru: "г. Кокшетау, ул. Ч. Валиханова", kk: "Көкшетау қ., Ш. Уәлиханов к-сі" } },
+      { icon: "question", text: { ru: "База знаний и частые вопросы", kk: "Білім қоры және жиі қойылатын сұрақтар" } },
     ],
   },
 ];
 
-export const residentsStats = [
-  { value: "24 531", label: "обращений за 30 дней" },
-  { value: "1,8 дня", label: "среднее время ответа" },
-  { value: "89%", label: "решено вовремя" },
-  { value: "24/7", label: "приём заявок" },
+export const residentsStats: { value: LS | string; label: LS }[] = [
+  { value: "24 531", label: { ru: "обращений за 30 дней", kk: "30 күндегі өтініш" } },
+  { value: { ru: "1,8 дня", kk: "1,8 күн" }, label: { ru: "среднее время ответа", kk: "орташа жауап беру уақыты" } },
+  { value: "89%", label: { ru: "решено вовремя", kk: "уақытында шешілді" } },
+  { value: "24/7", label: { ru: "приём заявок", kk: "өтінім қабылдау" } },
 ];
 
-export const residentsFeatures = [
+export const residentsFeatures: {
+  icon: IconName;
+  title: LS;
+  text: LS;
+  color: string;
+}[] = [
   {
-    icon: "chat" as IconName,
-    title: "Онлайн-обращения",
-    text: "Жалобы и предложения через сайт, приложение и iKomek 109.",
+    icon: "chat",
+    title: { ru: "Онлайн-обращения", kk: "Онлайн өтініштер" },
+    text: { ru: "Жалобы и предложения через сайт, приложение и iKomek 109.", kk: "Сайт, қосымша және iKomek 109 арқылы шағымдар мен ұсыныстар." },
     color: "#2563EB",
   },
   {
-    icon: "refresh" as IconName,
-    title: "Статус заявки",
-    text: "Отслеживание хода рассмотрения обращения в реальном времени.",
+    icon: "refresh",
+    title: { ru: "Статус заявки", kk: "Өтінім мәртебесі" },
+    text: { ru: "Отслеживание хода рассмотрения обращения в реальном времени.", kk: "Өтінішті қарау барысын нақты уақытта қадағалау." },
     color: "#8B5CF6",
   },
   {
-    icon: "map" as IconName,
-    title: "Карта проблем",
-    text: "Отметки жителей на карте: ЖКХ, дороги, освещение, благоустройство.",
+    icon: "map",
+    title: { ru: "Карта проблем", kk: "Мәселелер картасы" },
+    text: { ru: "Отметки жителей на карте: ЖКХ, дороги, освещение, благоустройство.", kk: "Тұрғындардың картадағы белгілері: ТКШ, жолдар, жарық, абаттандыру." },
     color: "#F5943B",
   },
   {
-    icon: "doc" as IconName,
-    title: "Инструкции",
-    text: "Пошаговые гайды по популярным услугам и обращениям.",
+    icon: "doc",
+    title: { ru: "Инструкции", kk: "Нұсқаулықтар" },
+    text: { ru: "Пошаговые гайды по популярным услугам и обращениям.", kk: "Танымал қызметтер мен өтініштер бойынша қадамдық нұсқаулар." },
     color: "#2FAE77",
   },
   {
-    icon: "question" as IconName,
-    title: "Частые вопросы",
-    text: "Ответы на типовые вопросы жителей области.",
+    icon: "question",
+    title: { ru: "Частые вопросы", kk: "Жиі қойылатын сұрақтар" },
+    text: { ru: "Ответы на типовые вопросы жителей области.", kk: "Облыс тұрғындарының типтік сұрақтарына жауаптар." },
     color: "#EF5B45",
   },
   {
-    icon: "telegram" as IconName,
-    title: "Telegram-бот",
-    text: "Быстрые обращения и уведомления в мессенджере.",
+    icon: "telegram",
+    title: { ru: "Telegram-бот", kk: "Telegram-бот" },
+    text: { ru: "Быстрые обращения и уведомления в мессенджере.", kk: "Мессенджердегі жедел өтініштер мен хабарламалар." },
     color: "#38A2C9",
   },
 ];
 
-export const residentsCta = [
-  { label: "Подать обращение", icon: "plus-circle" as IconName, primary: true },
-  { label: "Проверить статус", icon: "refresh" as IconName },
+export const residentsCta: { label: LS; icon: IconName; primary?: boolean }[] = [
+  { label: { ru: "Подать обращение", kk: "Өтініш беру" }, icon: "plus-circle", primary: true },
+  { label: { ru: "Проверить статус", kk: "Мәртебені тексеру" }, icon: "refresh" },
 ];

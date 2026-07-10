@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import SectionPage from "@/components/SectionPage";
+import Footer from "@/shared/Footer";
+import Header from "@/shared/Header";
+import SectionPage from "./(components)/SectionPage";
 import { getPage, pages } from "@/lib/pages";
+import { tr, DEFAULT_LANG } from "@/lib/i18n";
 
 export const dynamicParams = false;
 
@@ -19,8 +20,8 @@ export function generateMetadata({
   const data = getPage(params.slug);
   if (!data) return {};
   return {
-    title: `${data.title} — Smart Aqmola`,
-    description: data.subtitle,
+    title: `${tr(data.title, DEFAULT_LANG)} — Smart Aqmola`,
+    description: tr(data.subtitle, DEFAULT_LANG),
   };
 }
 

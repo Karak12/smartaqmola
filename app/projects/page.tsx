@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import MotionCard from "@/components/MotionCard";
-import CountUp from "@/components/CountUp";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Icon from "@/components/Icon";
-import ProjectsShowcase from "@/components/ProjectsShowcase";
-import Reveal from "@/components/Reveal";
+import MotionCard from "@/shared/MotionCard";
+import CountUp from "@/shared/CountUp";
+import Footer from "@/shared/Footer";
+import Header from "@/shared/Header";
+import Icon from "@/shared/Icon";
+import ProjectsShowcase from "./(components)/ProjectsShowcase";
+import Reveal from "@/shared/Reveal";
+import T from "@/shared/T";
 import { projectStats } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -29,13 +30,13 @@ export default function ProjectsPage() {
           {/* Статистика */}
           <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {projectStats.map((s, i) => (
-              <Reveal key={s.label} delay={i * 70}>
+              <Reveal key={s.label.ru} delay={i * 70}>
                 <MotionCard className="card h-full p-5 hover:shadow-card">
                   <div className="text-3xl font-extrabold tracking-tight text-ink">
                     <CountUp value={s.value} />
                   </div>
                   <div className="mt-1.5 text-[12px] font-medium text-ink-soft">
-                    {s.label}
+                    <T s={s.label} />
                   </div>
                 </MotionCard>
               </Reveal>
@@ -49,7 +50,7 @@ export default function ProjectsPage() {
               className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary transition-colors hover:text-primary-deep"
             >
               <Icon name="arrow-right" className="h-4 w-4 rotate-180" strokeWidth={2} />
-              На главную
+              <T ru="На главную" kk="Басты бетке" />
             </Link>
           </div>
         </div>

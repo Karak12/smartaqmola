@@ -2,57 +2,69 @@
 import type { IconName } from "./content";
 import { navCards, news } from "./content";
 import { projects } from "./projects";
-
-export type SearchCategory = "Раздел" | "Проект" | "Новость";
+import { tr, type Lang, type LS } from "./i18n";
 
 export type SearchItem = {
   title: string;
   subtitle: string;
   href: string;
-  category: SearchCategory;
+  category: LS;
   icon: IconName;
   keywords: string;
 };
 
-export const searchIndex: SearchItem[] = [
-  ...navCards.map(
-    (c): SearchItem => ({
-      title: c.title,
-      subtitle: c.text,
-      href: `/${c.slug}`,
-      category: "Раздел",
-      icon: c.icon,
-      keywords: `${c.title} ${c.text}`,
-    })
-  ),
-  ...projects.map(
-    (p): SearchItem => ({
-      title: p.name,
-      subtitle: p.description,
-      href: "/projects",
-      category: "Проект",
-      icon: p.icon,
-      keywords: `${p.name} ${p.tagline} ${p.description} ${p.tags.join(" ")}`,
-    })
-  ),
-  ...news.map(
-    (n): SearchItem => ({
-      title: n.title,
-      subtitle: n.date,
-      href: "/#news",
-      category: "Новость",
-      icon: "info",
-      keywords: n.title,
-    })
-  ),
-];
+const catSection: LS = { ru: "Раздел", kk: "Бөлім" };
+const catProject: LS = { ru: "Проект", kk: "Жоба" };
+const catNews: LS = { ru: "Новость", kk: "Жаңалық" };
 
-export function searchAll(query: string, limit = 8): SearchItem[] {
+// Индекс зависит от языка: строим его под текущий язык интерфейса.
+export function buildSearchIndex(lang: Lang): SearchItem[] {
+  return [
+    ...navCards.map((c): SearchItem => {
+      const title = tr(c.title, lang);
+      const text = tr(c.text, lang);
+      return {
+        title,
+        subtitle: text,
+        href: `/${c.slug}`,
+        category: catSection,
+        icon: c.icon,
+        keywords: `${title} ${text}`,
+      };
+    }),
+    ...projects.map((p): SearchItem => {
+      const name = tr(p.name, lang);
+      const tags = p.tags.map((t) => tr(t, lang)).join(" ");
+      return {
+        title: name,
+        subtitle: tr(p.description, lang),
+        href: "/projects",
+        category: catProject,
+        icon: p.icon,
+        keywords: `${name} ${tr(p.tagline, lang)} ${tr(p.description, lang)} ${tags}`,
+      };
+    }),
+    ...news.map((n): SearchItem => {
+      const title = tr(n.title, lang);
+      return {
+        title,
+        subtitle: tr(n.date, lang),
+        href: "/#news",
+        category: catNews,
+        icon: "info",
+        keywords: title,
+      };
+    }),
+  ];
+}
+
+export function searchAll(query: string, lang: Lang, limit = 8): SearchItem[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   const terms = q.split(/\s+/).filter(Boolean);
+  const index = buildSearchIndex(lang);
 
-  return searchIndex
+  return index
     .map((item) => {
       const hay = item.keywords.toLowerCase();
       const title = item.title.toLowerCase();
