@@ -1,0 +1,27 @@
+# Инфраструктура ТОЛЬКО для Nest-бэкенда Smart Aqmola.
+# Собственный изолированный Postgres (порт 5432, свой volume) — не пересекается
+# с уже запущенным стеком ias.
+#
+# MinIO НЕ поднимаем здесь — переиспользуем уже работающий контейнер
+# smartaqmola-minio (127.0.0.1:9000/9001). Креды указаны в .env.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: smartaqmola-nest-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: smartaqmola
+      POSTGRES_PASSWORD: smartaqmola
+      POSTGRES_DB: smartaqmola
+    ports:
+      - '5432:5432'
+    volumes:
+      - nestdb:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U smartaqmola']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  nestdb:

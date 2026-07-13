@@ -58,15 +58,19 @@ export default function AiReportDialog({ open, onClose }: Props) {
   const submit = async () => {
     if (!message.trim() || status === "sending") return;
     setStatus("sending");
-    await new Promise((r) => setTimeout(r, 1200));
-    // Сохраняем заявку в общее хранилище — она появится в админке «Заявки».
-    const id = addRequest({
-      category: category ?? "",
-      message: message.trim(),
-      address: address.trim(),
-    });
-    setTicketId(id);
-    setStatus("done");
+    try {
+      // Отправляем заявку на бэкенд — она появится в админке «Заявки».
+      const ticket = await addRequest({
+        category: category ?? "",
+        message: message.trim(),
+        address: address.trim(),
+      });
+      setTicketId(ticket);
+      setStatus("done");
+    } catch {
+      setStatus("idle");
+      alert("Не удалось отправить обращение. Попробуйте позже.");
+    }
   };
 
   const canSubmit = message.trim().length >= 10 && status === "idle";

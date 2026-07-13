@@ -3,7 +3,7 @@ import type { IconName } from "./content";
 import type { LS } from "./i18n";
 
 export type ProcurementDoc = { label: LS; meta?: LS; badge?: LS };
-export type ProcurementGroup = { title: LS; icon: IconName; items: ProcurementDoc[] };
+export type ProcurementGroup = { key: string; title: LS; icon: IconName; items: ProcurementDoc[] };
 
 export const procurementHero: { breadcrumb: LS; title: LS; subtitle: LS } = {
   breadcrumb: { ru: "Закупки", kk: "Сатып алулар" },
@@ -23,6 +23,7 @@ export const procurementStats: { value: string; label: LS }[] = [
 
 export const procurementGroups: ProcurementGroup[] = [
   {
+    key: "plan",
     title: { ru: "План государственных закупок", kk: "Мемлекеттік сатып алулар жоспары" },
     icon: "doc",
     items: [
@@ -35,6 +36,7 @@ export const procurementGroups: ProcurementGroup[] = [
     ],
   },
   {
+    key: "auction",
     title: { ru: "Объявления о проведении аукционов и открытых конкурсов", kk: "Аукциондар мен ашық конкурстарды өткізу туралы хабарландырулар" },
     icon: "bank",
     items: [
@@ -56,3 +58,8 @@ export const procurementGroups: ProcurementGroup[] = [
     ],
   },
 ];
+
+// Мета групп (для отрисовки заголовков, когда сами документы приходят из API
+// плоским списком с полем groupKey).
+export const procurementGroupsMeta: { key: string; title: LS; icon: IconName }[] =
+  procurementGroups.map((g) => ({ key: g.key, title: g.title, icon: g.icon }));

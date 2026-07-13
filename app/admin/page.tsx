@@ -9,16 +9,23 @@ import {
   requestStatusLabels,
 } from "@/lib/admin/store";
 
-const cards: { href: string; label: string; icon: IconName; key: "news" | "kpis" | "projects" | "requests" }[] = [
+const cards: { href: string; label: string; icon: IconName; key: "news" | "kpis" | "projects" | "procurement" | "requests" }[] = [
   { href: "/admin/news", label: "Новости", icon: "doc", key: "news" },
   { href: "/admin/kpis", label: "Цифры", icon: "bar-chart", key: "kpis" },
   { href: "/admin/projects", label: "Проекты", icon: "folder", key: "projects" },
+  { href: "/admin/procurement", label: "Закупки", icon: "bank", key: "procurement" },
   { href: "/admin/requests", label: "Заявки", icon: "chat", key: "requests" },
 ];
 
 export default function AdminDashboard() {
-  const { news, kpis, projects, requests } = useContent();
-  const counts = { news: news.length, kpis: kpis.length, projects: projects.length, requests: requests.length };
+  const { news, kpis, projects, procurement, requests } = useContent();
+  const counts = {
+    news: news.length,
+    kpis: kpis.length,
+    projects: projects.length,
+    procurement: procurement.length,
+    requests: requests.length,
+  };
   const recent = requests.slice(0, 5);
 
   return (
@@ -30,7 +37,7 @@ export default function AdminDashboard() {
         </p>
       </header>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         {cards.map((c) => (
           <Link
             key={c.key}
@@ -77,7 +84,7 @@ export default function AdminDashboard() {
                     {r.message}
                   </div>
                   <div className="text-[11px] text-ink-faint">
-                    {r.id} · {r.address || "без адреса"}
+                    {r.ticket} · {r.address || "без адреса"}
                   </div>
                 </div>
                 <span

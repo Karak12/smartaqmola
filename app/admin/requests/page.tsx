@@ -89,7 +89,7 @@ export default function RequestsAdmin() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="font-mono text-[12px] font-bold text-primary">{r.id}</span>
+                      <span className="font-mono text-[12px] font-bold text-primary">{r.ticket}</span>
                       {cat && (
                         <span className="text-[12px] font-semibold text-ink-soft">
                           {cat.label.ru}
@@ -107,7 +107,7 @@ export default function RequestsAdmin() {
                   </div>
                   <IconBtn
                     kind="delete"
-                    onClick={() => confirm(`Удалить заявку ${r.id}?`) && deleteRequest(r.id)}
+                    onClick={() => confirm(`Удалить заявку ${r.ticket}?`) && deleteRequest(r.id)}
                   />
                 </div>
 

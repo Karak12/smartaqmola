@@ -1,11 +1,12 @@
 "use client";
 
 // Переиспользуемые примитивы форм для админки.
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/shared/Icon";
 import type { LS } from "@/lib/i18n";
 import type { IconName } from "@/lib/content";
 import { iconNames, colorPalette } from "@/lib/admin/store";
+import { api, fileUrl } from "@/lib/api";
 
 const inputCls =
   "w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-[14px] text-ink outline-none transition-colors placeholder:text-ink-faint focus:border-primary/50";
@@ -293,5 +294,77 @@ export function EmptyState({ text }: { text: string }) {
     <div className="rounded-2xl2 border border-dashed border-line py-14 text-center text-[14px] text-ink-faint">
       {text}
     </div>
+  );
+}
+
+// Загрузка файла в MinIO. Хранит и отдаёт ключ объекта (не сам файл).
+export function FileUpload({
+  label,
+  value,
+  onChange,
+  accept,
+  variant = "image",
+}: {
+  label: string;
+  value?: string | null;
+  onChange: (key: string | null) => void;
+  accept?: string;
+  variant?: "image" | "file";
+}) {
+  const [busy, setBusy] = useState(false);
+  const url = fileUrl(value);
+
+  const onPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setBusy(true);
+    try {
+      const asset = await api.uploadFile(file);
+      onChange(asset.key);
+    } catch {
+      alert("Не удалось загрузить файл (нужна авторизация и запущенный MinIO).");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Field label={label}>
+      <div className="flex items-center gap-3">
+        {value && variant === "image" && url && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={url}
+            alt=""
+            className="h-16 w-24 shrink-0 rounded-lg border border-line object-cover"
+          />
+        )}
+        {value && variant === "file" && (
+          <a
+            href={url ?? "#"}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary hover:underline"
+          >
+            <Icon name="doc" className="h-4 w-4" /> Открыть файл
+          </a>
+        )}
+        <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2 text-[13px] font-semibold text-ink-soft transition-colors hover:border-primary/40 hover:text-primary">
+          <Icon name="plus-circle" className="h-4 w-4" />
+          {busy ? "Загрузка…" : value ? "Заменить" : "Загрузить"}
+          <input type="file" accept={accept} onChange={onPick} disabled={busy} className="hidden" />
+        </label>
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange(null)}
+            className="text-[13px] font-semibold text-ink-faint transition-colors hover:text-rose"
+          >
+            Убрать
+          </button>
+        )}
+      </div>
+    </Field>
   );
 }

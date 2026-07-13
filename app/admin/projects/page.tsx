@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Icon from "@/shared/Icon";
 import type { LS } from "@/lib/i18n";
+import { fileUrl } from "@/lib/api";
 import { useContent, blankProject, emptyLS, type ProjectItem } from "@/lib/admin/store";
 import {
   Btn,
   ColorPicker,
   EmptyState,
   Field,
+  FileUpload,
   IconBtn,
   IconPicker,
   LSInput,
@@ -61,13 +63,21 @@ export default function ProjectsAdmin() {
           {projects.map((p) => (
             <div key={p.id} className="card overflow-hidden">
               <div
-                className="flex items-center justify-between p-4"
+                className="relative flex items-center justify-between overflow-hidden p-4"
                 style={{ background: `linear-gradient(150deg, ${p.color}, #101B33)` }}
               >
-                <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/15 text-white">
+                {fileUrl(p.coverKey) && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={fileUrl(p.coverKey)!}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover opacity-60"
+                  />
+                )}
+                <span className="relative grid h-11 w-11 place-items-center rounded-xl bg-white/15 text-white">
                   <Icon name={p.icon} className="h-6 w-6" strokeWidth={1.6} />
                 </span>
-                <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold text-white">
+                <span className="relative rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
                   {p.status.ru}
                 </span>
               </div>
@@ -146,6 +156,13 @@ export default function ProjectsAdmin() {
           placeholder={{ ru: "17 районов", kk: "17 аудан" }}
         />
         <TagsEditor value={draft.tags} onChange={(tags) => setDraft((d) => ({ ...d, tags }))} />
+        <FileUpload
+          label="Обложка проекта"
+          value={draft.coverKey}
+          onChange={(coverKey) => setDraft((d) => ({ ...d, coverKey }))}
+          accept="image/*"
+          variant="image"
+        />
         <IconPicker value={draft.icon} onChange={(icon) => setDraft((d) => ({ ...d, icon }))} />
         <ColorPicker value={draft.color} onChange={(color) => setDraft((d) => ({ ...d, color }))} />
       </Modal>

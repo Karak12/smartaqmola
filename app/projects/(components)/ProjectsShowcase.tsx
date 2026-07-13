@@ -8,6 +8,7 @@ import { projectsHero } from "@/lib/projects";
 import { easeOut, springSnappy } from "@/lib/motion";
 import { useLang } from "@/lib/i18n-context";
 import { useContent } from "@/lib/admin/store";
+import { fileUrl } from "@/lib/api";
 
 export default function ProjectsShowcase() {
   const { t } = useLang();
@@ -93,9 +94,17 @@ export default function ProjectsShowcase() {
               className="flex h-full flex-col"
             >
               <div
-                className="relative h-48 shrink-0 sm:h-60"
+                className="relative h-48 shrink-0 overflow-hidden sm:h-60"
                 style={{ background: `linear-gradient(150deg, ${cur.color}, #101B33)` }}
               >
+                {fileUrl(cur.coverKey) && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={fileUrl(cur.coverKey)!}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                )}
                 <div className="map-net absolute inset-0 opacity-20" />
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8, rotate: -10 }}

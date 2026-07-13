@@ -8,14 +8,24 @@ import MotionCard from "@/shared/MotionCard";
 import Reveal from "@/shared/Reveal";
 import { Stagger, StaggerItem } from "@/shared/Stagger";
 import {
-  procurementGroups,
+  procurementGroupsMeta,
   procurementHero,
   procurementStats,
 } from "@/lib/procurement";
 import { useLang } from "@/lib/i18n-context";
+import { useContent } from "@/lib/admin/store";
+import { fileUrl } from "@/lib/api";
 
 export default function ProcurementView() {
   const { t } = useLang();
+  const { procurement } = useContent();
+  // Группируем плоский список документов по groupKey, заголовки берём из меты.
+  const groups = procurementGroupsMeta
+    .map((meta) => ({
+      ...meta,
+      items: procurement.filter((d) => d.groupKey === meta.key),
+    }))
+    .filter((g) => g.items.length > 0);
   return (
     <div className="container-content space-y-8 pb-4 pt-2">
       {/* Hero */}
@@ -68,8 +78,8 @@ export default function ProcurementView() {
       </Stagger>
 
       {/* Группы документов */}
-      {procurementGroups.map((group) => (
-        <section key={group.title.ru}>
+      {groups.map((group) => (
+        <section key={group.key}>
           <Reveal className="card p-5 sm:p-6">
             <div className="mb-5 flex items-start gap-3">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
@@ -80,10 +90,15 @@ export default function ProcurementView() {
               </h2>
             </div>
             <Stagger as="ul" className="divide-y divide-line">
-              {group.items.map((item, ii) => (
-                <StaggerItem key={ii} as="li">
+              {group.items.map((item) => {
+                const href = fileUrl(item.fileKey) ?? "#";
+                const hasFile = Boolean(item.fileKey);
+                return (
+                <StaggerItem key={item.id} as="li">
                   <a
-                    href="#"
+                    href={href}
+                    target={hasFile ? "_blank" : undefined}
+                    rel={hasFile ? "noreferrer" : undefined}
                     className="group flex items-center gap-3 py-3 transition-colors"
                   >
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-page text-ink-soft transition-colors group-hover:bg-primary-soft group-hover:text-primary">
@@ -117,7 +132,8 @@ export default function ProcurementView() {
                     />
                   </a>
                 </StaggerItem>
-              ))}
+                );
+              })}
             </Stagger>
           </Reveal>
         </section>

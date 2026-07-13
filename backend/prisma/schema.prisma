@@ -1,0 +1,112 @@
+// Smart Aqmola — схема данных.
+// Двуязычные поля (LS = { ru, kk }) хранятся как Json, чтобы совпадать с
+// формой данных, которую уже использует фронтенд.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Новости (лента и блок «Новости» на главной)
+model News {
+  id        String   @id @default(cuid())
+  date      Json // LS
+  title     Json // LS
+  tone      String   @default("#2563EB")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("news")
+}
+
+/// Ключевые показатели («Цифры» / панель региона)
+model Kpi {
+  id        String   @id @default(cuid())
+  icon      String
+  color     String   @default("#2563EB")
+  label     Json // LS
+  value     Json // LS
+  sub       Json // LS
+  delta     String   @default("")
+  deltaTone String   @default("up") // "up" | "down"
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("kpis")
+}
+
+/// Проекты (карусель на /projects)
+model Project {
+  id          String   @id @default(cuid())
+  name        Json // LS
+  tagline     Json // LS
+  description Json // LS
+  icon        String
+  color       String   @default("#2563EB")
+  status      Json // LS
+  year        String
+  area        Json // LS
+  tags        Json // LS[]
+  coverKey    String? // ключ объекта-обложки в MinIO
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+enum RequestStatus {
+  new
+  in_progress
+  done
+  rejected
+}
+
+/// Обращения жителей (из формы «Сообщить AI»)
+model Request {
+  id        String        @id @default(cuid())
+  ticket    String        @unique // напр. SA-123456
+  category  String        @default("")
+  message   String
+  address   String        @default("")
+  status    RequestStatus @default(new)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("requests")
+}
+
+/// Документы раздела «Закупки»
+model ProcurementDoc {
+  id        String   @id @default(cuid())
+  groupKey  String // "plan" | "auction"
+  label     Json // LS
+  meta      Json? // LS
+  badge     Json? // LS
+  fileKey   String? // ключ файла в MinIO
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("procurement_docs")
+}
+
+/// Метаданные загруженных файлов (сами файлы лежат в MinIO)
+model Asset {
+  id        String   @id @default(cuid())
+  key       String   @unique // ключ объекта в бакете
+  bucket    String
+  filename  String
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+
+  @@map("assets")
+}
