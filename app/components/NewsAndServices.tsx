@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import Icon from "@/shared/Icon";
 import Reveal from "@/shared/Reveal";
@@ -8,6 +9,7 @@ import { services } from "@/lib/content";
 import { springSnappy } from "@/lib/motion";
 import { useLang } from "@/lib/i18n-context";
 import { useContent } from "@/lib/admin/store";
+import { newsPhotoIds, unsplash } from "@/lib/gallery";
 
 export default function NewsAndServices() {
   const { t } = useLang();
@@ -28,18 +30,29 @@ export default function NewsAndServices() {
           </motion.a>
         </div>
         <Stagger className="grid gap-5 sm:grid-cols-3">
-          {news.map((n) => (
+          {news.map((n, i) => (
             <StaggerItem key={n.id} as="article" className="flex gap-3 sm:flex-col">
               <motion.div
-                className="group h-16 w-16 shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-full"
+                className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-full"
                 style={{
                   background: `linear-gradient(135deg, ${n.tone}, #12203D)`,
                 }}
                 whileHover={{ scale: 1.04 }}
                 transition={springSnappy}
               >
+                <Image
+                  src={unsplash(newsPhotoIds[i % newsPhotoIds.length], 400)}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 64px, 320px"
+                  className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-110"
+                />
+                <div
+                  className="absolute inset-0 mix-blend-multiply"
+                  style={{ background: `linear-gradient(135deg, ${n.tone}CC, #12203DAA)` }}
+                />
                 <motion.div
-                  className="map-net h-full w-full opacity-40"
+                  className="map-net relative h-full w-full opacity-40"
                   whileHover={{ scale: 1.12 }}
                   transition={{ duration: 0.5 }}
                 />

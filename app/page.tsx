@@ -5,6 +5,7 @@ import Kpis from "./components/Kpis";
 import NavCards from "./components/NavCards";
 import NewsAndServices from "./components/NewsAndServices";
 import NewsTicker from "./components/NewsTicker";
+import Gallery from "./components/Gallery";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <NewsTicker />
         <NavCards />
         <NewsAndServices />
+        <Gallery />
       </main>
       <Footer />
     </>
